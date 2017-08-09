@@ -12,3 +12,7 @@ build/webpack.base.conf.js
     }
   },
 ```
+
+如果在代码里
+里面如果写字符串需要加单引号
+:src="'/static/img/' + item.productImg"
