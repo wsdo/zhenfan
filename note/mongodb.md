@@ -1,0 +1,7 @@
+mongod：数据库服务端，类似mysqld，每个实例启动一个进程，可以fork为Daemon运行
+mongo：客户端命令行工具，类似sqlplus/mysql，其实也是一个js解释器，支持js语法
+mongodump/mongorestore：将数据导入为bson格式的文件/将bson文件恢复为数据库，类似xtracbackup
+mongoexport/mongoimport：将collection导出为json/csv格式数据/将数据导入数据库，类似mysqldump/mysqlimport
+bsondump：将bson格式的文件转储为json格式的数据
+mongos：分片路由，如果使用了sharding功能，则应用程序连接的是mongos而不是mongod
+mongofiles：GridFS管理工具 mongostat：实时监控工具
