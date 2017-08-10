@@ -24,9 +24,10 @@ var proxyTable = config.dev.proxyTable
 
 var app = express()
 var compiler = webpack(webpackConfig)
+// 声明express路由
 var router = express.Router();
-
 var goodsData = require('../mock/goods.json');
+// 读取本地的json数据
 router.get("/goods",function(req,res,next){
     res.json(goodsData);
 });

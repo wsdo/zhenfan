@@ -80,6 +80,12 @@
     methods: {
       getGoodsList(){
         axios.get("/goods").then((result) => {
+          // if(result.data.statue == 0){
+
+          // }else{
+          //   系统正忙
+          // }
+          
           let res = result.data.result;
           console.log(result)
           this.GoodsList = res;
