@@ -22,7 +22,31 @@ mongoose.connection.on('disconnected',function(){
 })
 
 router.get("/list",function(req,res,next){
-  let goodModel = Goods.find({},function(err, docs){
+
+  let sort = req.param("sort");
+  let priceLevel = req.param("priceLevel");
+  let priceGt = '',priceLte = '';
+  let param = {};
+  if(priceLevel != 'all'){
+    switch (priceLevel) {
+      case '0': priceGt = 0; priceLte = 100;break;
+      case '1': priceGt = 100; priceLte = 500;break;
+      case '2': priceGt = 500; priceLte = 1000;break;
+      case '3': priceGt = 1000; priceLte = 5000;break;
+    }
+
+    param = {
+      salePrice:{
+        $gt:priceGt,
+        $lte:priceLte,
+      }
+    }
+  }
+
+  let goodModel = Goods.find(param);
+  goodModel.sort({'salePrice':sort})
+
+  goodModel.exec({},function(err, docs){
       console.log(docs);
       res.json({
         status:'0',

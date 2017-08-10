@@ -26,12 +26,12 @@ var app = express()
 var compiler = webpack(webpackConfig)
 // 声明express路由
 var router = express.Router();
-var goodsData = require('../mock/goods.json');
+// var goodsData = require('../mock/goods.json');
 // 读取本地的json数据
-router.get("/goods",function(req,res,next){
-    res.json(goodsData);
-});
-app.use(router);
+// router.get("/goods",function(req,res,next){
+//     res.json(goodsData);
+// });
+// app.use(router);
 
 
 var devMiddleware = require('webpack-dev-middleware')(compiler, {
