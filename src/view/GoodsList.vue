@@ -65,6 +65,7 @@
         busy:true,
         page:1,
         pagesize:8,
+        flag:false,
         priceFilter:[
           {
             startPrice:'0.00',
@@ -94,7 +95,7 @@
       this.getGoodsList();
     },
     methods: {
-      getGoodsList(){
+      getGoodsList(flag){
         let param = {
           sort:this.sortFlag ? 1 : -1,
           priceLevel: this.priceChecked,
@@ -102,17 +103,28 @@
           pagesize:this.pagesize
         }
         axios.get("/goods/list",{params:param}).then((result) => {
-          // if(result.data.statue == 0){
-
-          // }else{
-          //   系统正忙
-          // }
+          let res = result.data;
+          if(res.status == 0){
+            if(flag){
+              this.GoodsList = this.GoodsList.concat(res.result);
+              // 判断当数据加载完了就截停
+              console.log(res.result.length);
+              if(res.result.length == 0){
+                this.busy = true;
+              }else{
+                this.busy = false;
+              }
+            }else{
+              this.GoodsList = res.result;
+              this.busy = false;
+            }
+            // console.log(this.GoodsList);
+          }else{
+            // 系统正忙
+            // alert("系统正忙")
+            // this.busy = false;
+          }
           
-          let res = result.data.result;
-          console.log(result)
-          this.GoodsList = res;
-          this.busy = false;
-          // console.log(this.GoodsList);
         })
       },
       sortGoods(){
@@ -128,7 +140,7 @@
           this.busy = true;
           setTimeout(() => {
             this.page ++;
-            this.getGoodsList();
+            this.getGoodsList(true);
             console.log(1111)
           }, 500);
       }
