@@ -5,6 +5,10 @@ import App from './App'
 import router from './router'
 import VueLazyLoad from 'vue-lazyload'
 
+// register globally
+import infiniteScroll from 'vue-infinite-scroll'
+Vue.use(infiniteScroll)
+
 // css
 import '@/assets/css/base'
 import '@/assets/css/login'

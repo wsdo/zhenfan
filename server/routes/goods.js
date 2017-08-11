@@ -23,9 +23,13 @@ mongoose.connection.on('disconnected',function(){
 
 router.get("/list",function(req,res,next){
 
+  let page = req.param("page"); //第几页
+  let pagesize = req.param("pagesize"); //每页有多少条数据
+
   let sort = req.param("sort");
   let priceLevel = req.param("priceLevel");
   let priceGt = '',priceLte = '';
+  let skip = (page-1) * pagesize;
   let param = {};
   if(priceLevel != 'all'){
     switch (priceLevel) {
@@ -43,9 +47,8 @@ router.get("/list",function(req,res,next){
     }
   }
 
-  let goodModel = Goods.find(param);
+  let goodModel = Goods.find(param).limit(pagesize).skip(skip);
   goodModel.sort({'salePrice':sort})
-
   goodModel.exec({},function(err, docs){
       console.log(docs);
       res.json({

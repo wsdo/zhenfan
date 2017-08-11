@@ -38,7 +38,9 @@
                 </div>
               </div>
             </li>
-            
+            <div v-infinite-scroll="loadMore" infinite-scroll-disabled="busy" infinite-scroll-distance="20">
+              ...
+            </div>
           </ul>
         </div>
       </div>
@@ -60,6 +62,9 @@
         GoodsList:Array,
         sortFlag:true,
         priceChecked:'all',
+        busy:true,
+        page:1,
+        pagesize:8,
         priceFilter:[
           {
             startPrice:'0.00',
@@ -92,7 +97,9 @@
       getGoodsList(){
         let param = {
           sort:this.sortFlag ? 1 : -1,
-          priceLevel: this.priceChecked
+          priceLevel: this.priceChecked,
+          page:this.page,
+          pagesize:this.pagesize
         }
         axios.get("/goods/list",{params:param}).then((result) => {
           // if(result.data.statue == 0){
@@ -104,7 +111,7 @@
           let res = result.data.result;
           console.log(result)
           this.GoodsList = res;
-
+          this.busy = false;
           // console.log(this.GoodsList);
         })
       },
@@ -116,6 +123,14 @@
         console.log(index)
         this.priceChecked = index;
         this.getGoodsList();
+      },
+      loadMore(){
+          this.busy = true;
+          setTimeout(() => {
+            this.page ++;
+            this.getGoodsList();
+            console.log(1111)
+          }, 500);
       }
     }
   }
