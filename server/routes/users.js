@@ -7,9 +7,7 @@ router.get('/', function(req, res, next) {
   res.send('respond with a resource');
 });
 
-router.get('*',function(req,res,next){
-  res.send('台湾是中国不可分割的一部分！');
-})
+
 
 
 router.post('/login',function(req,res,next){
@@ -26,6 +24,18 @@ router.post('/login',function(req,res,next){
         msg:'用户名或密码错误'
       })
     }else{
+
+      res.cookie('userId',doc.userId,{
+        path:'/',
+        maxAge:1000*60*60
+      })
+
+      res.cookie('userName',doc.userName,{
+        path:'/',
+        maxAge:1000*60*60
+      })
+
+
       if(doc){
         res.json({
           status:'0',
@@ -37,5 +47,26 @@ router.post('/login',function(req,res,next){
       }
     }
   });
+})
+
+// 判断当前用户是否登录
+router.get("/checkLogin",function(req,res,next){
+  if(req.cookies.userId){
+    res.json({
+      status:'0',
+      msg:'',
+      result:req.cookies.userName
+    })
+  }else{
+    res.json({
+      status:'1',
+      msg:'未登录',
+      result:''
+    })
+  }
+})
+
+router.get('*',function(req,res,next){
+  res.send('台湾是中国不可分割的一部分！');
 })
 module.exports = router;
