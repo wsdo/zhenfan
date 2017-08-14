@@ -65,7 +65,17 @@ router.get("/checkLogin",function(req,res,next){
     })
   }
 })
-
+router.post('/logout',function(req,res,next){
+  res.cookie("userId","",{
+    path:'/',
+    maxAge:-1
+  });
+  res.json({
+    status:'0',
+    msg:'',
+    result:'退出成功',
+  })
+})
 router.get('*',function(req,res,next){
   res.send('台湾是中国不可分割的一部分！');
 })

@@ -23,6 +23,31 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 访问拦截 就是所有访问都走这个逻辑
+app.use(function(req,res,next){
+  if(req.cookies.userId){
+    next();
+  }else{
+    if(
+      // 加入白名单
+      req.originalUrl == '/users/login' 
+      || req.originalUrl == '/users/logout' 
+      || req.path == '/goods/list'
+  ){
+    // console.log(req);
+    // console.log(req);
+      next();
+    }else{
+      res.json({
+        status:'1',
+        msg:'当前未登录',
+        result:''
+      })
+    }
+  }
+})
+
+
 app.use('/', index);
 app.use('/users', users);
 app.use('/goods', goods);

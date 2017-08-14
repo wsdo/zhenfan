@@ -50,7 +50,7 @@ router.get("/list",function(req,res,next){
   let goodModel = Goods.find(param).limit(pagesize).skip(skip);
   goodModel.sort({'salePrice':sort})
   goodModel.exec({},function(err, docs){
-      console.log(docs);
+      // console.log(docs);
       res.json({
         status:'0',
         result:docs
@@ -64,7 +64,15 @@ router.get("/list",function(req,res,next){
 // 加入购物车
 
 router.post("/addCart", function(req,res,next){
-  var userId = '100000077',productId = req.body.productId;
+  if(req.cookies.userId){
+    var userId = req.cookies.userId;
+  }else{
+    res.json({
+      status:"1",
+      msg:'用户信息不存在'
+    })
+  }
+  var productId = req.body.productId;
   var User = require('../models/user');
 
   User.findOne({userId:userId},function(err,userDoc){

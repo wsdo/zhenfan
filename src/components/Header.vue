@@ -18,7 +18,7 @@
           <span class="navbar-link"></span>
           <span v-text="nickName" v-if="nickName"></span>
           <a href="javascript:void(0)" class="navbar-link" v-if="!nickName" @click="loginModalFlag = true">登录</a>
-          <a href="javascript:void(0)" class="navbar-link">退出</a>
+          <a href="javascript:void(0)" class="navbar-link" @click="logout">退出</a>
           <div class="navbar-cart-container">
             <span class="navbar-cart-count"></span>
             <a class="navbar-link navbar-cart-link" href="/#/cart">
@@ -111,6 +111,14 @@
             }
           })
           // this.loginModalFlag = true;
+      },
+      logout(){
+        axios.post('/users/logout').then((response) => {
+          let res = response.data;
+          if(res.status == '0'){
+            this.nickName = '';
+          }
+        })
       }
     }
   }
