@@ -13,6 +13,7 @@ Vue.use(infiniteScroll)
 import '@/assets/css/base'
 import '@/assets/css/login'
 import '@/assets/css/product'
+import '@/assets/css/checkout'
 Vue.config.productionTip = false
 
 Vue.use(VueLazyLoad,{
