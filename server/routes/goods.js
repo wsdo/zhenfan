@@ -113,6 +113,8 @@ router.post("/addCart", function(req,res,next){
         Goods.findOne({productId:productId},function(err1,goodsDoc){
           // 添加相同的商品，商品只添加一次，数量加1
             goodsDoc.productNum = 1;
+            goodsDoc.checked = 1;
+            
             userDoc.cartList.push(goodsDoc);
             userDoc.save(function(err2,doc2){
               if(err2){

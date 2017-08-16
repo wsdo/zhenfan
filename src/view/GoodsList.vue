@@ -64,7 +64,7 @@
       <p slot="message">加入购物车成功</p>
       <div slot="btnGroup">
           <a href="javascript:;" class="btn btn--m" @click="mdShowCart = false">继续购物</a>
-          <router-link class="btn btn--m"  to="/cart"> 查看购物车</router-link>
+          <router-link class="btn btn-m"  to="/cart"> 查看购物车</router-link>
       </div>
     </modal>
 
