@@ -229,6 +229,7 @@
           }
           item.productNum--;
         }else{
+          //当前取反，当为未选中的时候是0，点击后变为1
           item.checked = item.checked == '1' ? '0' : '1';
         }
 
