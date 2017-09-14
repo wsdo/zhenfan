@@ -26,7 +26,7 @@
       <div class="accessory-list-wrap">
         <div class="accessory-list col-4">
           <ul>
-            <li v-for="item in GoodsList">
+            <li v-for="item in goodsList">
               <div class="pic">
                 <a href="#"><img v-lazy="'/static/img/' + item.productImage" alt=""></a>
               </div>
@@ -76,12 +76,13 @@
   import NavFooter from '@/components/Footer'
   import NavBread from '@/components/NavBread'
   import Modal from '@/components/Modal'
-  import axios from 'axios'
+  import { mapState, mapActions } from 'vuex'
+
   export default {
     name: 'GoodsList',
     data(){
       return {
-        GoodsList:Array,
+        goodsList:Array,
         sortFlag:true,
         priceChecked:'all',
         busy:true,
@@ -119,6 +120,14 @@
     mounted: function(){
       this.getGoodsList();
     },
+    // computed: {
+    //   ...mapState({
+    //     goodsList:({ GoodsList }) => GoodsList.goodsList
+    //     // goodsList: function(data){
+    //     //   return data;
+    //     // }
+    //   })
+    // },
     methods: {
       getGoodsList(flag){
         let param = {
@@ -127,11 +136,14 @@
           page:this.page,
           pagesize:this.pagesize
         }
-        axios.get("/goods/list",{params:param}).then((result) => {
+
+        // this.$store.dispatch('goodsList',param)
+        // console.log(this.goodsList);
+        this.$http.get("/goods/list",{params:param}).then((result) => {
           let res = result.data;
           if(res.status == 0){
             if(flag){
-              this.GoodsList = this.GoodsList.concat(res.result);
+              this.goodsList = this.goodsList.concat(res.result);
               // 判断当数据加载完了就截停
               console.log(res.result.length);
               if(res.result.length == 0){
@@ -140,7 +152,7 @@
                 this.busy = false;
               }
             }else{
-              this.GoodsList = res.result;
+              this.goodsList = res.result;
               this.busy = false;
             }
             // console.log(this.GoodsList);
@@ -173,7 +185,7 @@
       //添加购物车
       addCart(productId){
         // 调用添加购物车的接口
-        axios.post("/goods/addCart",{
+        this.$http.post("/goods/addCart",{
           productId:productId
         }).then((res) => {
             var res = res.data;

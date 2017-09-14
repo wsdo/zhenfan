@@ -120,7 +120,7 @@
               总价格: <span class="total-price">{{totalPrice}}</span>
             </div>
             <div class="btn-wrap">
-              <a class="btn btn--red">结账</a>
+              <a class="btn btn--red" @click="checkOut">结账</a>
             </div>
           </div>
         </div>
@@ -244,6 +244,13 @@
       },
       checkeds(){
         this.checked = 1;
+      },
+      checkOut(){
+        if(this.checkedCount>0){
+            this.$router.push({
+                path:"/address"
+            });
+        }
       }
     }
   }
