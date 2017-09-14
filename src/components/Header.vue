@@ -68,6 +68,8 @@
 
 <script>
   import axios from 'axios'
+  import { mapState, mapActions } from 'vuex'
+
   export default {
     name: 'Header',
     data(){
@@ -76,18 +78,24 @@
         userName:'',
         userPwd:'',
         errorTip:false,
-        nickName:''
+        // nickName:''
       }
     },
     mounted: function(){
       this.checkLogin();
+      // console.log(this.nickName)
+    },
+    computed: {
+        ...mapState(['nickName'])
     },
     methods:{
       checkLogin(){
         axios.get("/users/checkLogin").then((response) => {
           let res = response.data;
           if(res.status == 0){
-            this.nickName = res.result;
+            this.$store.commit("updateUserInfo",res.result);
+            // this.nickName = res.result;
+            this.loginModalFlag = false;
           }
         })
       },
@@ -98,14 +106,22 @@
             return false;
           }
 
+          let param = {
+            userName:this.userName,
+            userPwd:this.userPwd
+          }
+
+          // this.$store.dispatch('userLogin',param)
+          
           axios.post("/users/login",{
             userName:this.userName,
             userPwd:this.userPwd
           }).then((response) =>{
             let res = response.data;
             if(res.status == '0'){
+                this.$store.commit("updateUserInfo",res.result.userName);
                 this.loginModalFlag = false;
-                this.nickName = res.result.userName;
+                
             }else{
                 this.errorTip = true;
             }
@@ -116,7 +132,8 @@
         axios.post('/users/logout').then((response) => {
           let res = response.data;
           if(res.status == '0'){
-            this.nickName = '';
+            this.$store.commit("updateUserInfo",res.result.userName);
+            // this.nickName = '';
           }
         })
       }
